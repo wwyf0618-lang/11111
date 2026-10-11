@@ -28,7 +28,7 @@ def render(inp,out,fps=24,preview=False):
   # q=1 dispersed; q returns to 0 in final quarter
   if t>.68: q*=1-ease((t-.68)/.32)
   xx=x+dx*q*(1+0.25*np.sin(t*18+y*.01)); yy=y+dy*q*(1+0.25*np.cos(t*16+x*.01))
-  frame=np.full((H,W,3),250,dtype=np.float32)
+  frame=np.zeros((H,W,3),dtype=np.float32)
   if q<.08 or t<.12 or t>.88:
    frame=np.array(im,dtype=np.float32)
   else:
@@ -36,7 +36,7 @@ def render(inp,out,fps=24,preview=False):
    frame[yi,xi]=np.maximum(frame[yi,xi],col*255)
    # soft glow layer
    glow=Image.fromarray(np.uint8(np.clip(frame,0,255))).filter(ImageFilter.GaussianBlur(radius=max(1,int(3*q))))
-   frame=0.72*frame+0.28*np.asarray(glow)
+   frame=0.72*frame+0.45*np.asarray(glow)
   p.stdin.write(np.uint8(np.clip(frame,0,255)).tobytes())
  p.stdin.close(); p.wait()
  if p.returncode: raise SystemExit(p.returncode)
