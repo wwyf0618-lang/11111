@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b12"><title>手势粒子创作工具</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <canvas id="stage" aria-label="粒子画布"></canvas>
+  <div class="vignette"></div>
+  <section class="topbar ui">
+    <div class="brand"><span class="brand-icon">✳</span><div><strong>粒子创作室</strong><small>LOCAL · HAND CONTROLLED</small></div></div>
+    <div class="top-actions"><span id="assetName" class="asset-name">正在载入示例…</span><button id="cameraButton" class="button camera">启用手势</button><button id="hideButton" class="icon-button" title="隐藏界面 (H)">隐藏 UI</button></div>
+  </section>
+  <aside class="panel ui" id="controls">
+    <div class="panel-head"><div><span class="eyebrow">CREATE</span><h1>粒子设置</h1></div><span class="live-dot">LOCAL</span></div>
+    <label class="upload" for="imageInput"><span class="upload-icon">＋</span><span><b>添加图片</b><small>PNG · JPG · SVG · 可多选</small></span><input id="imageInput" type="file" accept="image/png,image/jpeg,image/svg+xml,.png,.jpg,.jpeg,.svg" multiple></label>
+    <div class="section-title">外观</div>
+    <div class="slider-row"><label for="particleCount">粒子数量</label><output id="particleCountValue"></output></div><input id="particleCount" type="range" min="500" max="10000" step="250" value="5000">
+    <div class="slider-row"><label for="particleSize">粒子大小</label><output id="particleSizeValue"></output></div><input id="particleSize" type="range" min="0.6" max="5" step="0.2" value="1.8">
+    <div class="color-row"><label for="particleColor">粒子颜色</label><input id="particleColor" type="color" value="#4169ff"></div>
+    <label class="check-row"><span>使用原图颜色</span><input id="useImageColors" type="checkbox" checked><i></i></label>
+    <div class="section-title">动态与引导图</div>
+    <div class="slider-row"><label for="scatterRange">散开范围</label><output id="scatterRangeValue"></output></div><input id="scatterRange" type="range" min="20" max="420" step="10" value="180">
+    <div class="slider-row"><label for="gatherSpeed">聚合速度</label><output id="gatherSpeedValue"></output></div><input id="gatherSpeed" type="range" min="0.02" max="0.22" step="0.01" value="0.09">
+    <div class="slider-row"><label for="glowStrength">发光强度</label><output id="glowStrengthValue"></output></div><input id="glowStrength" type="range" min="0" max="24" step="1" value="10">
+    <div class="slider-row"><label for="guideOpacity">原图透明度</label><output id="guideOpacityValue"></output></div><input id="guideOpacity" type="range" min="0" max="0.5" step="0.01" value="0.13">
+    <div class="slider-row"><label for="guideScale">原图缩放</label><output id="guideScaleValue"></output></div><input id="guideScale" type="range" min="0.4" max="1.4" step="0.02" value="0.92">
+    <label class="check-row"><span>显示原图引导</span><input id="showGuideImage" type="checkbox" checked><i></i></label>
+    <div class="panel-foot"><button id="savePreset" class="button secondary">↓ 保存预设</button><button id="loadPresetButton" class="button secondary">↑ 读取预设</button><input id="presetInput" type="file" accept="application/json,.json" hidden></div>
+  </aside>
+  <div class="bottom-hud ui"><div class="gesture-status"><span class="status-dot" id="statusDot"></span><span id="gestureText">鼠标点击或按空格切换状态</span></div><div class="keys"><span><kbd>SPACE</kbd> 聚合/散开</span><span><kbd>←</kbd><kbd>→</kbd> 切换图片</span><span><kbd>H</kbd> 隐藏界面</span></div></div>
+  <video id="cameraVideo" playsinline muted></video>
+  <div class="toast" id="toast" role="status"></div>
+</main>
+<script type="module" src="app.js"></script>
+</body></html>
