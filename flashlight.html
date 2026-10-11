@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>鼠标手电筒</title>
+<style>
+  :root { --mouse-x: 50vw; --mouse-y: 50vh; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+  .scene, .image, .mask { position: fixed; inset: 0; width: 100%; height: 100%; }
+  .scene { background: #f8e7bd; }
+  .image {
+    object-fit: cover;
+    display: block;
+    /* 亮色占位图：可替换成自己的图片地址 */
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 1000'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='35%25'%3E%3Cstop stop-color='%23fff9d8'/%3E%3Cstop offset='.45' stop-color='%23ffc976'/%3E%3Cstop offset='1' stop-color='%23ed7653'/%3E%3C/radialGradient%3E%3ClinearGradient id='s' x2='1' y2='1'%3E%3Cstop stop-color='%23ffcf70'/%3E%3Cstop offset='.5' stop-color='%23ff8a65'/%3E%3Cstop offset='1' stop-color='%23ef476f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1600' height='1000' fill='url(%23g)'/%3E%3Ccircle cx='310' cy='230' r='170' fill='%23fff4b5' fill-opacity='.75'/%3E%3Ccircle cx='1300' cy='230' r='220' fill='%23ffeb8b' fill-opacity='.55'/%3E%3Cpath d='M0 700 Q260 460 520 700 T1040 650 T1600 620 V1000 H0Z' fill='url(%23s)' fill-opacity='.8'/%3E%3Cpath d='M0 820 Q320 600 650 820 T1280 760 T1600 800 V1000 H0Z' fill='%23c94282' fill-opacity='.6'/%3E%3Ctext x='800' y='510' text-anchor='middle' font-family='sans-serif' font-size='72' font-weight='700' fill='%23fff' fill-opacity='.9'%3EMOVE YOUR MOUSE%3C/text%3E%3C/svg%3E");
+  }
+  .mask {
+    pointer-events: none;
+    background: radial-gradient(circle 100px at var(--mouse-x) var(--mouse-y), transparent 0 100px, rgba(0,0,0,.85) 101px);
+    transition: background-position .04s linear;
+  }
+  .hint { position: fixed; left: 50%; bottom: 8vh; transform: translateX(-50%); color: #fff; font: 500 15px/1.5 system-ui,sans-serif; text-shadow: 0 1px 8px #000; pointer-events: none; opacity: .9; }
+  @media (pointer: coarse) { .mask, .hint { display: none; } }
+</style>
+</head>
+<body>
+  <main class="scene" aria-label="鼠标手电筒效果">
+    <img class="image" alt="亮色占位图">
+    <div class="mask" aria-hidden="true"></div>
+    <div class="hint">移动鼠标探索画面</div>
+  </main>
+<script>
+(() => {
+  const root = document.documentElement;
+  const mask = document.querySelector('.mask');
+  const hint = document.querySelector('.hint');
+  const isTouch = matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+  if (isTouch) { mask.remove(); hint.remove(); return; }
+  addEventListener('mousemove', event => {
+    root.style.setProperty('--mouse-x', `${event.clientX}px`);
+    root.style.setProperty('--mouse-y', `${event.clientY}px`);
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
